@@ -1,0 +1,4 @@
+const apiConfig = {};
+
+export {apiConfig};
+

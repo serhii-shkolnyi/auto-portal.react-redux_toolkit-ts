@@ -1,0 +1,21 @@
+.layout {
+    height: 100svh;
+    display: flex;
+    flex-direction: column;
+}
+.header {
+    height: 60px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: white;
+    box-shadow: 1px 1px 4px darkgrey;
+    z-index: 500;
+}
+
+.main {
+    margin-top: 62px;
+    flex: 1 1 auto;
+    height: 100%;
+}
