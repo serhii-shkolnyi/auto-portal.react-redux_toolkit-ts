@@ -1,25 +1,23 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {AxiosError} from "axios";
 import {IUser} from "../../interfaces";
-import {EAccountStatus, EAccountType} from "../../enums";
 import {userService} from "../../services/user.service";
+import { IResponseRegister} from "../../interfaces/response";
 
 export interface IResponse {
-    data:IUser
+    user: IUser | null
+    // accessToken: string |null;
+    // refreshToken: string |null;
 }
 
-const initialState:IUser  = {
-    userName: "",
-    phone: "",
-    email: "",
-    password: "",
-    accountType: EAccountType.BASIC,
-    accountStatus: EAccountStatus.INACTIVE,
-    avatar: null,
-};
+const initialState: IResponse = {
+    user: null,
+    // accessToken: null,
+    // refreshToken: null,
 
-const register = createAsyncThunk<IResponse, {user:Partial<IUser>}>(
-    'userSlice/register', async ({user}, {rejectWithValue}):Promise<any> => {
+};
+const register = createAsyncThunk<IResponseRegister, { user: Partial<IUser> }>(
+    'userSlice/register', async ({user}, {rejectWithValue}): Promise<any> => {
         try {
             const {data} = await userService.register(user);
             return data;
@@ -30,7 +28,7 @@ const register = createAsyncThunk<IResponse, {user:Partial<IUser>}>(
     }
 )
 
-const registerVerify = createAsyncThunk<void, {token:string|undefined}>(
+const registerVerify = createAsyncThunk<void, { token: string | undefined }>(
     'userSlice/registerVerify', async ({token}, {rejectWithValue}) => {
         try {
             const {data} = await userService.registerVerify(token);
@@ -43,6 +41,41 @@ const registerVerify = createAsyncThunk<void, {token:string|undefined}>(
     }
 )
 
+const login = createAsyncThunk<IUser, { user: Partial<IUser> }>(
+    'userSlice/login', async ({user}, {rejectWithValue}): Promise<any> => {
+        try {
+            return  await userService.login(user);
+        } catch (e) {
+            const err = e as AxiosError;
+            return rejectWithValue(err.response?.data);
+        }
+    }
+)
+
+const me = createAsyncThunk<IUser, void>(
+    'userSlice/me', async (_, {rejectWithValue}): Promise<any> => {
+        try {
+            const {data} = await userService.me();
+            return data;
+        } catch (e) {
+            const err = e as AxiosError;
+            return rejectWithValue(err.response?.data);
+        }
+    }
+)
+const updateMe = createAsyncThunk<IUser, { user: Partial<IUser>, id: string }>(
+    'userSlice/updateMe', async ({user,id}, {rejectWithValue}): Promise<any> => {
+        console.log(user, id)
+        try {
+            const {data} = await userService.updateMe(user,id);
+            return data;
+        } catch (e) {
+            const err = e as AxiosError;
+            return rejectWithValue(err.response?.data);
+        }
+    }
+)
+
 
 const userSlice = createSlice({
     name: 'userSlice',
@@ -50,15 +83,19 @@ const userSlice = createSlice({
     reducers: {},
     extraReducers: builder => builder
         .addCase(register.fulfilled, (state, action) => {
-            state.userName = action.payload.data.userName;
-            state.phone = action.payload.data.phone;
-            state.email = action.payload.data.email;
-            state.accountType = action.payload.data.accountType;
-            state.accountStatus = action.payload.data.accountStatus;
-            state.avatar = action.payload.data.avatar
+            state.user = action.payload.data;
         })
-        .addCase(registerVerify.fulfilled, (state, action)=>{
+        .addCase(registerVerify.fulfilled, (state, action) => {
 
+        })
+        .addCase(login.fulfilled, (state, action) => {
+            state.user = action.payload;
+        })
+        .addCase(me.fulfilled, (state, action) => {
+            state.user = action.payload;
+        })
+        .addCase(updateMe.fulfilled, (state, action) => {
+            state.user = action.payload;
         })
 });
 
@@ -67,8 +104,10 @@ const {reducer: userReducer, actions} = userSlice;
 const userActions = {
     ...actions,
     register,
-    registerVerify
-
+    registerVerify,
+    login,
+    me,
+    updateMe
 }
 export {
     userActions,

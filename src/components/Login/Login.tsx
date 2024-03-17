@@ -1,16 +1,16 @@
 import React, {FC, useState} from 'react';
-import {useForm} from "react-hook-form";
 import {IUser} from "../../interfaces";
 import {joiResolver} from "@hookform/resolvers/joi";
-import {userValidator} from "../../validators";
+import {userLogin} from "../../validators";
 import {useAppDispatch} from "../../hooks";
 import {Link, useNavigate} from "react-router-dom";
 import {userActions} from "../../store/slices/user.slice";
 import css from "./Login.module.css";
+import {useForm} from "react-hook-form";
 
 const Login:FC = () => {
     const {register, handleSubmit, reset, formState: {errors}} = useForm<Partial<IUser>>({
-        resolver: joiResolver(userValidator)
+        resolver: joiResolver(userLogin)
     });
     const [errorMessage, setErrorMessage] = useState();
 
@@ -18,11 +18,11 @@ const Login:FC = () => {
     const navigate = useNavigate();
     const onSubmit = async (user: Partial<IUser>) => {
         // @ts-ignore
-        const {payload: {message}, meta: {requestStatus}} = await dispatch(userActions.register({user}));
+        const {payload: {message}, meta: {requestStatus}} = await dispatch(userActions.login({user}));
         if (requestStatus === "rejected") {
             setErrorMessage(message)
         }else{
-            navigate("/cabinet/login")
+            navigate("/")
         }
         reset();
     };

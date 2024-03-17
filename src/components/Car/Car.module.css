@@ -1,0 +1,17 @@
+.wrapper {
+    width: 28%;
+    padding: 10px;
+    margin: 10px;
+    box-shadow: 0 0 2px darkgrey;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+}
+.wrapper img {
+    display: block;
+    width: 95%;
+}
+.description{
+    overflow: hidden;
+}

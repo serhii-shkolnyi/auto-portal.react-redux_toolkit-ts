@@ -6,7 +6,6 @@ import {joiResolver} from "@hookform/resolvers/joi";
 import {userValidator} from "../../validators";
 import {useAppDispatch} from "../../hooks";
 import {userActions} from "../../store/slices/user.slice";
-import {Link, useNavigate} from "react-router-dom";
 
 const SignUp: FC = () => {
     const {register, handleSubmit, reset, formState: {errors}} = useForm<Partial<IUser>>({

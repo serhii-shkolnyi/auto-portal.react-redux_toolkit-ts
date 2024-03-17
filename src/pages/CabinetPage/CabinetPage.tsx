@@ -5,7 +5,6 @@ import css from "./CabinetPage.module.css";
 const CabinetPage:FC = () => {
     return (
         <div className={css.wrapper}>
-            CabinetPage
             <Outlet/>
 
         </div>

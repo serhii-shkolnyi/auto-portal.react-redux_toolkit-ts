@@ -21,7 +21,26 @@ const userValidator = Joi.object({
     })
 });
 
+const userLogin = Joi.object({
+    email: Joi.string().regex(regexConstant.EMAIL).required().messages({
+        'string.empty': "поле не може бути пустим",
+        'string.pattern.base': 'Це не email'
+    }),
+    password:Joi.string().regex(regexConstant.PASSWORD).required().messages({
+        'string.empty': "поле не може бути пустим",
+        'string.pattern.base': 'має бути хочаб одна заглавна літера та мінімум 8 літер'
+    })
+});
+const userUpdate = Joi.object({
+    userName: Joi.string().required().trim().messages({
+        'string.empty': "поле не може бути пустим",
+        'string.pattern.base': 'Це не email'
+    }),
+
+});
 
 export {
-    userValidator
-}
+    userValidator,
+    userLogin,
+    userUpdate
+};

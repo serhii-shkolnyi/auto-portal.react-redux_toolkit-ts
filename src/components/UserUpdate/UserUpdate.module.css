@@ -1,6 +1,6 @@
 .wrapper {
     height: 100%;
-    margin-top: 62px;
+    margin-top: -62px;
     display: flex;
     align-items: center;
     justify-content: center;

@@ -10,7 +10,7 @@
 .form {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 25px;
     width: 350px;
 }
 
