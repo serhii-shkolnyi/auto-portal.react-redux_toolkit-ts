@@ -48,7 +48,6 @@ const modelSlice = createSlice({
     extraReducers: builder => builder
         .addCase(getAllForBrand.fulfilled, (state, action) => {
             state.models = action.payload;
-            console.log(action.payload)
         })
         .addCase(getId.fulfilled, (state, action) => {
             state.model = action.payload;
